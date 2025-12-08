@@ -1,0 +1,45 @@
+version: 2
+
+sources:
+  - name: northwind
+    description: "Fonte de dados Northwind contendo informações sobre pedidos, clientes e funcionários."
+    schema: dbt
+    loader: bigquery
+      
+    tables:
+      - name: orders
+
+        description: "Tabela contendo registros de todos os pedidos do Northwind."
+
+        columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
+            description: "ID do perido"
+          - name: customer_id
+            description: "Id do cliente"
+          - name: employee_id
+            description: "id do funcionário"	
+          - name: order_date
+            description: "Data da ordem"	
+          - name: required_date
+            description: "data da requisição"
+          - name: shipped_date
+            description: "data de embarque"
+          - name: ship_via
+            description: "Método de envio"	
+          - name: freight
+            description: "Custo do frete"	
+          - name: ship_name
+            description: "Nome do navio"
+          - name: ship_address
+            description: "Endereço do navio"
+          - name: ship_city
+            description: "cidade do navio"
+          - name: ship_region
+            description: "Região do navio"
+          - name: ship_postal_code
+            description: "Código postal do navio"
+          - name: ship_country
+            description: "País do navio"                                         
