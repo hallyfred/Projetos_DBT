@@ -7,5 +7,5 @@ exemplo_dbt:
       project: projetodbt-479518
       dataset: "{{env_var('DBT_DBNAME', 'dbt')}}"
       threads: 4
-      keyfile: C:\Users\hally\Downloads\projetodbt-479518-eff5b0128b9e.json
+      keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
       location: US
