@@ -1,9 +1,12 @@
 {{ config(materialized='view') }}
 
+
+
+
 with orders as (
 
     select
-        order_id,
+        order_id
         customer_id,
         employee_id,
         order_date,
