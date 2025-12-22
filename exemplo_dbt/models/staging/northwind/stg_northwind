@@ -1,0 +1,253 @@
+version: 2
+
+models:
+###############################################################################
+#################### --- STAGING: PEDIDOS (ORDERS) --- ########################
+###############################################################################
+  - name: stg_northwind__orders
+    description: "Tabela de pedidos limpa e traduzida para o português."
+    columns:
+      - name: id_pedido
+        description: "Chave primária do pedido."
+        data_tests:
+          - unique
+          - not_null
+      - name: id_cliente
+        description: "Código identificador do cliente (FK)."
+        data_tests:
+          - not_null
+      - name: id_colaborador
+        description: "ID do funcionário responsável pela venda."
+      - name: id_transportadora
+        description: "ID da transportadora responsável pela entrega."
+      - name: data_pedido
+        description: "Data em que o pedido foi realizado."
+      - name: data_requisicao
+        description: "Data solicitada para entrega."
+      - name: data_embarque
+        description: "Data em que o pedido saiu para entrega."
+      - name: valor_frete
+        description: "Custo total do frete do pedido."
+      - name: nome_destinatario
+        description: "Nome da pessoa ou empresa que receberá o pedido."
+      - name: endereco_entrega
+        description: "Endereço completo de entrega."
+      - name: cidade_entrega
+        description: "Cidade de destino."
+      - name: regiao_entrega
+        description: "Região ou estado de destino."
+      - name: cep_entrega
+        description: "Código postal de destino."
+      - name: pais_entrega
+        description: "País de destino."
+
+###############################################################################
+################### --- STAGING: CLIENTES (CUSTOMERS) --- #####################
+###############################################################################
+  - name: stg_northwind__customers
+    description: "Cadastro de clientes com nomes de colunas padronizados."
+    columns:
+      - name: id_cliente
+        description: "Código único do cliente."
+        data_tests:
+          - unique
+          - not_null
+      - name: nome_empresa
+        description: "Nome da empresa cliente."
+      - name: nome_contato
+        description: "Nome do contato principal."
+      - name: cargo_contato
+        description: "Cargo do contato na empresa."
+      - name: endereco
+        description: "Endereço de faturamento."
+      - name: cidade
+        description: "Cidade do cliente."
+      - name: regiao
+        description: "Estado ou região do cliente."
+      - name: cep
+        description: "Código postal."
+      - name: pais
+        description: "País do cliente."
+      - name: telefone
+        description: "Telefone de contato."
+      - name: fax
+        description: "Número de fax."
+
+###############################################################################
+################# --- STAGING: FUNCIONÁRIOS (EMPLOYEES) --- ###################
+###############################################################################
+  - name: stg_northwind__employees
+    description: "Informações cadastrais dos colaboradores da Northwind."
+    columns:
+      - name: id_colaborador
+        description: "ID único do funcionário."
+        data_tests:
+          - unique
+          - not_null
+      - name: sobrenome
+        description: "Sobrenome do colaborador."
+      - name: nome
+        description: "Nome do colaborador."
+      - name: cargo
+        description: "Cargo ocupado."
+      - name: titulo_cortesia
+        description: "Título de tratamento (Ex: Sr., Sra.)."
+      - name: data_nascimento
+        description: "Data de nascimento."
+      - name: data_contratacao
+        description: "Data de admissão na empresa."
+      - name: endereco
+        description: "Endereço residencial."
+      - name: cidade
+        description: "Cidade de residência."
+      - name: regiao
+        description: "Região ou estado."
+      - name: cep
+        description: "Código postal residencial."
+      - name: pais
+        description: "País de residência."
+      - name: telefone_residencial
+        description: "Telefone fixo de casa."
+      - name: ramal
+        description: "Ramal interno."
+      - name: foto
+        description: "Arquivo ou referência da foto."
+      - name: notas
+        description: "Observações e histórico do funcionário."
+      - name: id_gestor
+        description: "ID do gestor direto (Auto-relacionamento)."
+      - name: caminho_foto
+        description: "Caminho de rede para a imagem."
+
+###############################################################################
+############## --- STAGING: DETALHES DOS PEDIDOS (ORDER_DETAILS) --- ##########
+###############################################################################
+  - name: stg_northwind__order_details
+    description: "Itens que compõem cada pedido (detalhamento de produtos)."
+    columns:
+      - name: id_pedido
+        description: "ID do pedido vinculado."
+        data_tests:
+          - not_null
+      - name: id_produto
+        description: "ID do produto vendido."
+        data_tests:
+          - not_null
+      - name: preco_unitario
+        description: "Preço cobrado pela unidade no momento da venda."
+      - name: quantidade
+        description: "Quantidade vendida."
+      - name: desconto
+        description: "Percentual de desconto aplicado."
+
+###############################################################################
+################### --- STAGING: PRODUTOS (PRODUCTS) --- ######################
+###############################################################################
+  - name: stg_northwind__products
+    description: "Catálogo de produtos da empresa."
+    columns:
+      - name: id_produto
+        description: "Chave primária do produto."
+        data_tests:
+          - unique
+          - not_null
+      - name: nome_produto
+        description: "Nome comercial do item."
+      - name: id_fornecedor
+        description: "ID do fornecedor do produto."
+      - name: id_categoria
+        description: "ID da categoria do produto."
+      - name: quantidade_por_unidade
+        description: "Descrição da embalagem/unidade."
+      - name: preco_unitario
+        description: "Preço de lista atual."
+      - name: unidades_estoque
+        description: "Quantidade disponível em estoque."
+      - name: unidades_encomendadas
+        description: "Quantidade em trânsito/encomenda."
+      - name: nivel_reposicao
+        description: "Ponto de pedido para estoque."
+      - name: is_descontinuado
+        description: "Flag indicando se o produto saiu de linha (True/False)."
+
+###############################################################################
+#################### --- STAGING: REGIÕES (REGION) --- ########################
+###############################################################################
+  - name: stg_northwind__region
+    description: "Macro-regiões de operação."
+    columns:
+      - name: id_regiao
+        description: "ID da região."
+        data_tests:
+          - unique
+          - not_null
+      - name: descricao_regiao
+        description: "Nome da região (Ex: Northern, Southern)."
+
+###############################################################################
+############## --- STAGING: TRANSPORTADORAS (SHIPPERS) --- ####################
+###############################################################################
+  - name: stg_northwind__shippers
+    description: "Transportadoras parceiras."
+    columns:
+      - name: id_transportadora
+        description: "ID da transportadora."
+        data_tests:
+          - unique
+          - not_null
+      - name: nome_empresa
+        description: "Nome da transportadora."
+      - name: telefone
+        description: "Telefone de contato."
+
+###############################################################################
+################# --- STAGING: FORNECEDORES (SUPPLIERS) --- ###################
+###############################################################################
+  - name: stg_northwind__suppliers
+    description: "Dados dos fornecedores de produtos."
+    columns:
+      - name: id_fornecedor
+        description: "ID único do fornecedor."
+        data_tests:
+          - unique
+          - not_null
+      - name: nome_empresa
+        description: "Nome da empresa fornecedora."
+      - name: nome_contato
+        description: "Pessoa de contato."
+      - name: cargo_contato
+        description: "Cargo do contato."
+      - name: endereco
+        description: "Endereço comercial."
+      - name: cidade
+        description: "Cidade de origem."
+      - name: regiao
+        description: "Estado ou região."
+      - name: cep
+        description: "Código postal."
+      - name: pais
+        description: "País de origem."
+      - name: telefone
+        description: "Telefone comercial."
+      - name: fax
+        description: "Número do fax."
+      - name: homepage
+        description: "Site oficial."
+
+###############################################################################
+################# --- STAGING: TERRITÓRIOS (TERRITORIES) --- ##################
+###############################################################################
+  - name: stg_northwind__territories
+    description: "Territórios específicos de atuação."
+    columns:
+      - name: id_territorio
+        description: "ID do território."
+        data_tests:
+          - unique
+          - not_null
+      - name: descricao_territorio
+        description: "Nome da cidade ou área do território."
+      - name: id_regiao
+        description: "Vínculo com a macro-região."
+        data_tests:
+          - not_null

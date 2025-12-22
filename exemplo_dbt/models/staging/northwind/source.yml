@@ -13,7 +13,7 @@ sources:
 
         columns:
           - name: order_id
-            tests:
+            data_tests:
               - unique
               - not_null
             description: "ID do perido"
@@ -42,4 +42,237 @@ sources:
           - name: ship_postal_code
             description: "Código postal do navio"
           - name: ship_country
-            description: "País do navio"                                         
+            description: "País do navio" 
+
+
+###############################################################################
+#################### --- TABELA DE CLIENTES --- ##############################
+##############################################################################
+
+    tables:
+      - name: customers
+
+        description: "Tabela contendo dados detalhados dos clientes do Northwind."
+
+        columns:
+          - name: customer_id
+            data_tests:
+              - unique
+              - not_null
+            description: "ID do cliente"
+          - name: company_name
+            description: "Nome da empresa"
+          - name: contact_name
+            description: "Nome do contato"
+          - name: contact_title
+            description: "cargo do contato"	
+          - name: address
+            description: "Endereço do cliente"
+          - name: city
+            description: "Cidade do cliente"
+          - name: region
+            description: "Região do cliente"	
+          - name: postal_code
+            description: "Código postal do cliente"	
+          - name: country
+            description: "País do cliente"
+          - name: ship_address
+            description: "Endereço do navio"
+          - name: phone
+            description: "Telefone do cliente"
+          - name: ship_region
+            description: "Região do navio"
+          - name: ship_postal_code
+            description: "Código postal do navio"
+          - name: fax
+            description: "Fax do cliente"
+
+###############################################################################
+##################### --- TABELA DE FUNCIONÁRIOS --- ##########################
+###############################################################################
+      - name: employees
+        description: "Tabela contendo informações cadastrais dos funcionários da Northwind."
+        columns:
+          - name: employee_id
+            description: "ID único do funcionário (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: last_name
+            description: "Sobrenome do funcionário."
+          - name: first_name
+            description: "Nome do funcionário."
+          - name: title
+            description: "Cargo ou título ocupado pelo funcionário."
+          - name: title_of_courtesy
+            description: "Título de cortesia (Ex: Mr., Ms., Dr.)."
+          - name: birth_date
+            description: "Data de nascimento do funcionário."
+          - name: hire_date
+            description: "Data em que o funcionário foi contratado."
+          - name: address
+            description: "Endereço residencial do funcionário."
+          - name: city
+            description: "Cidade de residência."
+          - name: region
+            description: "Estado ou região de residência."
+          - name: postal_code
+            description: "Código postal residencial."
+          - name: country
+            description: "País de residência."
+          - name: home_phone
+            description: "Telefone fixo residencial."
+          - name: extension
+            description: "Ramal interno do funcionário."
+          - name: photo
+            description: "Referência ou binário da foto do funcionário."
+          - name: notes
+            description: "Observações, histórico acadêmico ou notas de desempenho."
+          - name: reports_to
+            description: "ID do gestor imediato (Chave Estrangeira para a própria tabela)."
+          - name: photo_path
+            description: "Caminho de rede para a foto do funcionário." 
+###############################################################################
+##################### --- TABELA DE DETALHES DOS PEDIDOS --- ##################
+###############################################################################   
+
+      - name: order_details
+        description: "Itens de linha que compõem cada pedido, contendo preços praticados e quantidades."
+        columns:
+          - name: order_id
+            description: "ID do pedido (Chave Estrangeira para a tabela orders)."
+            data_tests:
+              - not_null
+          - name: product_id
+            description: "ID do produto vendido (Chave Estrangeira para a tabela products)."
+            data_tests:
+              - not_null
+          - name: unit_price
+            description: "Preço unitário do produto no momento da venda (pode ser diferente do preço de lista)."
+          - name: quantity
+            description: "Quantidade total do produto vendida neste item de linha."
+          - name: discount
+            description: "Percentual de desconto aplicado ao item (valor de 0 a 1)." 
+
+###############################################################################
+##################### --- TABELA DE PRODUTOS --- ##############################
+############################################################################### 
+
+
+      - name: products
+        description: "Catálogo de produtos da Northwind, incluindo preços de lista e níveis de estoque."
+        columns:
+          - name: product_id
+            description: "ID único do produto (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: product_name
+            description: "Nome comercial do produto."
+            data_tests:
+              - not_null
+          - name: supplier_id
+            description: "ID do fornecedor (Chave Estrangeira para a tabela suppliers)."
+          - name: category_id
+            description: "ID da categoria (Chave Estrangeira para a tabela categories)."
+          - name: quantity_per_unit
+            description: "Descrição da quantidade por unidade (ex: 24 bottles, 1 kg)."
+          - name: unit_price
+            description: "Preço de lista atual do produto."
+          - name: units_in_stock
+            description: "Quantidade física disponível no estoque."
+          - name: units_on_order
+            description: "Quantidade de unidades já encomendadas junto aos fornecedores."
+          - name: reorder_level
+            description: "Nível de estoque mínimo que dispara um novo pedido de compra."
+          - name: discontinued
+            description: "Indicador se o produto foi descontinuado (1 para Sim, 0 para Não)."     
+
+###############################################################################
+##################### --- TABELA DE REGIÕES --- ###############################
+###############################################################################
+
+      - name: region
+        description: "Tabela que define as grandes divisões geográficas (ex: Norte, Sul) da operação."
+        columns:
+          - name: region_id
+            description: "ID único da região (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: region_description
+            description: "Descrição textual da região (ex: Eastern, Western, Northern, Southern)."
+            data_tests:
+              - not_null 
+###############################################################################
+##################### --- TABELA DE TRANSPORTADORAS --- #######################
+###############################################################################
+      - name: shippers
+        description: "Tabela contendo as empresas de logística responsáveis pela entrega dos pedidos."
+        columns:
+          - name: shipper_id
+            description: "ID único da transportadora (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: company_name
+            description: "Nome da empresa de transporte (ex: Speedy Express, United Package)."
+            data_tests:
+              - not_null
+          - name: phone
+            description: "Telefone de contato da transportadora."
+
+###############################################################################
+##################### --- TABELA DE FORNECEDORES --- ##########################
+###############################################################################
+      - name: suppliers
+        description: "Tabela contendo informações cadastrais dos fornecedores dos produtos da Northwind."
+        columns:
+          - name: supplier_id
+            description: "ID único do fornecedor (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: company_name
+            description: "Nome da empresa fornecedora."
+            data_tests:
+              - not_null
+          - name: contact_name
+            description: "Nome da pessoa de contato no fornecedor."
+          - name: contact_title
+            description: "Cargo da pessoa de contato."
+          - name: address
+            description: "Endereço físico do fornecedor."
+          - name: city
+            description: "Cidade do fornecedor."
+          - name: region
+            description: "Região, estado ou província do fornecedor."
+          - name: postal_code
+            description: "Código postal do fornecedor."
+          - name: country
+            description: "País de origem do fornecedor."
+          - name: phone
+            description: "Telefone de contato comercial."
+          - name: fax
+            description: "Número de fax para pedidos."
+          - name: homepage
+            description: "Link para o site ou página inicial do fornecedor."
+###############################################################################
+##################### --- TABELA DE TERRITÓRIOS --- ###########################
+###############################################################################
+      - name: territories
+        description: "Tabela que detalha os territórios específicos de vendas vinculados a cada região."
+        columns:
+          - name: territory_id
+            description: "ID único do território (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: territory_description
+            description: "Descrição ou nome do território (ex: Boston, Santa Clara)."
+            data_tests:
+              - not_null
+          - name: region_id
+            description: "ID da região à qual este território pertence (Chave Estrangeira para a tabela region)."
+            data_tests:
+              - not_null

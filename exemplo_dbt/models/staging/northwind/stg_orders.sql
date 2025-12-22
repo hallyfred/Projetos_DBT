@@ -1,27 +1,37 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
 
+with 
 
+source as (
+    select * from {{ source('northwind', 'orders') }}
+),
 
-with orders as (
-
+renamed as (
     select
-        order_id
-        customer_id,
-        employee_id,
-        order_date,
-        required_date,
-        shipped_date,
-        ship_via,
-        freight,
-        ship_name,
-        ship_address,
-        ship_city,
-        ship_region,
-        ship_postal_code,
-        ship_country
-    from {{ source('northwind', 'orders') }}
+        -- transformações de chaves (IDs)
+        cast(order_id as int64) as id_pedido,
+        cast(customer_id as string) as id_cliente,
+        cast(employee_id as int64) as id_colaborador,
+        cast(ship_via as int64) as id_transportadora, 
 
+        -- transformações de datas (Casting para DATE)
+        cast(order_date as date) as data_pedido,
+        cast(required_date as date) as data_requisicao,
+        cast(shipped_date as date) as data_embarque,
+
+        -- trnasformações de valores monetários (Casting para NUMERIC)
+        cast(freight as numeric) as valor_frete,
+
+        -- limpeza de strings (Remoção de espaços em branco desnecessários)
+        trim(ship_name) as nome_destinatario,
+        trim(ship_address) as endereco_entrega,
+        trim(ship_city) as cidade_entrega,
+        trim(ship_region) as regiao_entrega,
+        trim(ship_postal_code) as cep_entrega,
+        trim(ship_country) as pais_entrega
+
+    from source
 )
 
-select * from orders
+select * from renamed
