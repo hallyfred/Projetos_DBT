@@ -4,7 +4,7 @@ models:
 ###############################################################################
 #################### --- STAGING: PEDIDOS (ORDERS) --- ########################
 ###############################################################################
-  - name: stg_northwind__orders
+  - name: stg_orders
     description: "Tabela de pedidos limpa e traduzida para o português."
     columns:
       - name: id_pedido
@@ -21,7 +21,7 @@ models:
       - name: id_transportadora
         description: "ID da transportadora responsável pela entrega."
       - name: data_pedido
-        description: "Data em que o pedido foi realizado."
+        description: "Data que se espera a entrega do pedido"
       - name: data_requisicao
         description: "Data solicitada para entrega."
       - name: data_embarque
@@ -40,11 +40,28 @@ models:
         description: "Código postal de destino."
       - name: pais_entrega
         description: "País de destino."
+      - name: dias_processamento
+        description: "Tempo até o embarque do pedido (em dias)."
+      - name: status_pedido
+        description: "Status do pedido (Enviado ou Pendente)."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Enviado', 'Pendente']
+      - name: pedido_atrasado
+        description: "Indicador se o pedido está atrasado (sim/não)."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Sim', 'Não']
+
 
 ###############################################################################
 ################### --- STAGING: CLIENTES (CUSTOMERS) --- #####################
 ###############################################################################
-  - name: stg_northwind__customers
+  - name: stg_customers
     description: "Cadastro de clientes com nomes de colunas padronizados."
     columns:
       - name: id_cliente
@@ -76,7 +93,7 @@ models:
 ###############################################################################
 ################# --- STAGING: FUNCIONÁRIOS (EMPLOYEES) --- ###################
 ###############################################################################
-  - name: stg_northwind__employees
+  - name: stg_employees
     description: "Informações cadastrais dos colaboradores da Northwind."
     columns:
       - name: id_colaborador
@@ -118,11 +135,15 @@ models:
         description: "ID do gestor direto (Auto-relacionamento)."
       - name: caminho_foto
         description: "Caminho de rede para a imagem."
+      - name: idade_colaborador
+        description: "Idade atual do colaborador."
+      - name: anos_empresa
+        description: "Número de anos de serviço na empresa."
 
 ###############################################################################
 ############## --- STAGING: DETALHES DOS PEDIDOS (ORDER_DETAILS) --- ##########
 ###############################################################################
-  - name: stg_northwind__order_details
+  - name: stg_order_details
     description: "Itens que compõem cada pedido (detalhamento de produtos)."
     columns:
       - name: id_pedido
@@ -139,11 +160,13 @@ models:
         description: "Quantidade vendida."
       - name: desconto
         description: "Percentual de desconto aplicado."
+      - name: preco_total
+        description: "Valor total do item (Preço Unitário x Quantidade - Desconto)."
 
 ###############################################################################
 ################### --- STAGING: PRODUTOS (PRODUCTS) --- ######################
 ###############################################################################
-  - name: stg_northwind__products
+  - name: stg_products
     description: "Catálogo de produtos da empresa."
     columns:
       - name: id_produto
@@ -169,6 +192,15 @@ models:
         description: "Ponto de pedido para estoque."
       - name: is_descontinuado
         description: "Flag indicando se o produto saiu de linha (True/False)."
+      - name: valor_estoque
+        description: "Valor monetário total do produto em estoque (Preço x Unidades)."
+      - name: status_estoque
+        data_tests:
+          - accepted_values:
+              arguments:  
+                values: ['Esgotado', 'Estoque Baixo', 'Estoque Normal']
+      - name: necessario_repor
+        description: "Flag lógica: True se o estoque estiver baixo e o produto não estiver descontinuado."        
 
 ###############################################################################
 #################### --- STAGING: REGIÕES (REGION) --- ########################

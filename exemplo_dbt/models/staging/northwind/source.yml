@@ -49,7 +49,7 @@ sources:
 #################### --- TABELA DE CLIENTES --- ##############################
 ##############################################################################
 
-    tables:
+    
       - name: customers
 
         description: "Tabela contendo dados detalhados dos clientes do Northwind."
