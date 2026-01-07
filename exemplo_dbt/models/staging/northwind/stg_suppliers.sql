@@ -1,12 +1,11 @@
 {{ config(materialized='table') }}
 
-with source as (select * from {{source('northwind', 'customers')}}),
-
+with source as (select * from {{source('northwind', 'suppliers')}}),
 
 renamed as (
     select
         -- transformações de chaves (IDs)
-        cast(customer_id as string) as id_cliente,
+        cast(supplier_id as int64) as id_fornecedor,
 
         -- limpeza de strings (Remoção de espaços em branco desnecessários)
         {{clean_string('company_name')}} as nome_empresa,
@@ -18,7 +17,8 @@ renamed as (
         {{clean_string('postal_code')}} as cep,
         {{clean_string('country')}} as pais,
         {{clean_string('phone')}} as telefone,
-        {{clean_string('fax')}} as fax
+        {{clean_string('fax')}} as fax,
+        {{clean_string('homepage')}} as home_page
 
     from source
 )

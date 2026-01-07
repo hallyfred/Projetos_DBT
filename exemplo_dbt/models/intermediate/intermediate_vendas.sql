@@ -1,27 +1,36 @@
-{{ config(
-    materialized='ephemeral',
-    tags=['intermediate']
-) }}
+{{ config(materialized='ephemeral') }}
 
 with orders as (
-
-    select
-        extract(year from order_date) as order_year,
-        extract(month from order_date) as order_month,
-        freight as total_frete  -- Ajustei o nome para bater com a soma abaixo
-    from {{ ref('stg_orders') }}
-
+    select * from {{ ref('stg_orders') }}
 ),
 
-vendas_agrupadas as (
+order_details as (
+    select * from {{ ref('stg_order_details') }}
+),
 
+vendas as (
     select
-        order_year,
-        order_month,
-        sum(total_frete) as soma_frete
-    from orders
-    group by order_year, order_month
-
-)
+        -- Criando uma chave composta e única para cada linha da fato
+        -- Lembrete: a tabela order_details não possui uma chave primária única
+        {{ dbt_utils.generate_surrogate_key(['od.order_id', 'od.product_id']) }} as sales_id,
+        od.order_id,
+        o.customer_id,
+        o.employee_id,
+        od.product_id,
         
-select * from vendas_agrupadas
+        -- Datas
+        o.order_date,
+        
+        -- Métricas de Venda
+        od.unit_price,
+        od.quantity,
+        od.discount,
+        
+        -- Cálculos de Receita
+        cast(od.unit_price * od.quantity as numeric) as gross_revenue,
+        cast((od.unit_price * od.quantity) * (1 - od.discount) as numeric) as net_revenue
+    from order_details od
+    left join orders o on od.order_id = o.order_id
+)
+
+select * from vendas

@@ -61,7 +61,7 @@ models:
 ###############################################################################
 ################### --- STAGING: CLIENTES (CUSTOMERS) --- #####################
 ###############################################################################
-  - name: stg_customers
+  - name: stg_costumers
     description: "Cadastro de clientes com nomes de colunas padronizados."
     columns:
       - name: id_cliente
@@ -219,7 +219,7 @@ models:
 ###############################################################################
 ############## --- STAGING: TRANSPORTADORAS (SHIPPERS) --- ####################
 ###############################################################################
-  - name: stg_northwind__shippers
+  - name: stg_shippers
     description: "Transportadoras parceiras."
     columns:
       - name: id_transportadora
@@ -235,7 +235,7 @@ models:
 ###############################################################################
 ################# --- STAGING: FORNECEDORES (SUPPLIERS) --- ###################
 ###############################################################################
-  - name: stg_northwind__suppliers
+  - name: stg_suppliers
     description: "Dados dos fornecedores de produtos."
     columns:
       - name: id_fornecedor
