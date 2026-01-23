@@ -9,7 +9,7 @@ renamed as (
         cast(shipper_id as int64) as id_transportadora,
 
         -- limpeza de strings (Remoção de espaços em branco desnecessários)
-        trim(lower(company_name)) as nome_empresa,
+        trim(upper(company_name)) as nome_empresa,
         trim(phone) as telefone
 
     from source

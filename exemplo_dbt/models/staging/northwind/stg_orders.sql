@@ -17,10 +17,10 @@ renamed as (
 
         -- transformações de datas: Usando Macros para converter para formato BR
 
-        {{ format_br_date('order_date') }} as data_pedido_formatada,
-        {{ format_br_date('required_date') }} as data_requisicao_formatada,
-        {{ format_br_date('shipped_date') }} as data_embarque_formatada,
-        
+        {{ format_br_date('order_date') }} as data_pedido,
+        {{ format_br_date('required_date') }} as data_requisicao,
+        {{ format_br_date('shipped_date') }} as data_embarque,
+
         -- trnasformações de valores monetários (Casting para NUMERIC)
         cast(freight as numeric) as valor_frete,
 
@@ -38,12 +38,12 @@ renamed as (
         date_diff(cast(shipped_date as date), cast(order_date as date), day) as dias_processamento,
           
         -- Status de embarque: Pedido Enviado ou Pendente?
-        case when shipped_date is null then 'Envio Pendente' else 'Enviado' end as status_embarque,
+        case when shipped_date is null then 'ENVIO PENDENTE' else 'ENVIADO' end as status_embarque,
 
         -- Pedido Atrasado: Sim ou Não?
         case 
-            when shipped_date > required_date then "Sim" 
-            else "Não" 
+            when shipped_date > required_date then "SIM" 
+            else "NÃO" 
         end as pedido_atrasado,
 
 
