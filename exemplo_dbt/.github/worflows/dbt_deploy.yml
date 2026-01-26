@@ -1,0 +1,27 @@
+name: dbt_deploy_prod
+
+on:
+  push:
+    branches:
+      - main 
+jobs:
+  deploy_production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
+
+      - name: Authenticate GCP
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > ./service-account-key.json
+
+      - name: dbt Build (Production)
+        run: dbt build --target prod  
