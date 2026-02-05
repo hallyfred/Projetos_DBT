@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  # ------------------------------------------------------------------
+  # Modelo 1: Vendas Agrupadas (Por Pedido)
+  # ------------------------------------------------------------------
+  - name: intermediate_vendas_agrupado
+    description: >
+      Agrega as vendas agrupado por pedido para calcular receita total e 
+      status consolidado. Usado como base para análise de clientes (modelo intermediate_clientes).
+    columns:
+      - name: ID_PEDIDO
+        description: "Chave primária do pedido."
+        tests:
+          - unique
+          - not_null
+      
+      - name: QUANTIDADE_TOTAL
+        description: "Soma total da quantidade de itens no pedido. (inclui itens diferentes no mesmo pedido)"
+
+      - name: RECEITA_BRUTA_TOTAL
+        description: "Soma de todos os itens do pedido antes de descontos."
+
+      - name: RECEITA_TOTAL_COM_DESCONTO
+        description: "Soma de todos os itens do pedido com descontos aplicados."
+
+      - name: STATUS_EMBARQUE
+        description: "Status atual do envio do pedido."
+
+#DEMAIS COLUNAS OMITIDAS PARA BREVIDADE, CONSULTE O CÓDIGO COMPLETO NA CAMADA MARTS ARQUIVO schema_marts.yml

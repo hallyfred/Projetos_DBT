@@ -1,0 +1,287 @@
+version: 2
+
+models:
+  # ------------------------------------------------------------------
+  # Modelo 1: Fato Vendas
+  # ------------------------------------------------------------------
+  - name: fct_vendas
+    description: >
+      Tabela Fato de Vendas consolidada por Pedido.
+      Contém métricas de receita, detalhes de envio e status de atraso.
+    columns:
+      # --- CHAVES E IDENTIFICADORES ---
+      - name: ID_PEDIDO
+        description: "Chave Primária. Identificador único do pedido."
+        tests:
+          - unique
+          - not_null
+
+      - name: ID_CLIENTE
+        description: "Chave Estrangeira. Identificador do cliente que realizou a compra."
+        tests:
+          - not_null
+          # Garante que todo cliente na Fato existe na Dimensão Clientes
+          - relationships:
+              to: ref('dim_clientes')
+              field: ID_CLIENTE
+
+      - name: ID_COLABORADOR
+        description: "Identificador do funcionário responsável pela venda."
+
+      - name: ID_TRANSPORTADORA
+        description: "Identificador da empresa responsável pelo frete."
+
+      # --- DATAS E PRAZOS ---
+      - name: DATA_PEDIDO
+        description: "Data em que o pedido foi registrado no sistema."
+
+      - name: DATA_REQUISICAO
+        description: "Data limite prometida para a entrega."
+
+      - name: DATA_EMBARQUE
+        description: "Data efetiva em que o pedido saiu para entrega."
+
+      - name: DIAS_PROCESSAMENTO
+        description: "Tempo decorrido (em dias) entre o pedido e o embarque."
+
+      # --- STATUS E FLAGS ---
+      - name: STATUS_EMBARQUE
+        description: "Status logístico atual do pedido."
+        tests:
+          - accepted_values:
+              values: ['ENVIADO', 'ENVIO PENDENTE']
+
+      - name: PEDIDO_ATRASADO
+        description: "Indicador se o envio ultrapassou a data requisitada."
+        tests:
+          - accepted_values:
+              values: ['SIM', 'NÃO']
+
+      # --- MÉTRICAS FINANCEIRAS ---
+      - name: QUANTIDADE_TOTAL
+        description: "Soma da quantidade de todos os itens dentro do pedido."
+
+      - name: RECEITA_BRUTA_TOTAL
+        description: "Valor total dos produtos (Preço * Quantidade) sem considerar descontos."
+
+      - name: DESCONTO_TOTAL
+        description: "Valor total abatido do pedido através de descontos."
+
+      - name: RECEITA_TOTAL_COM_DESCONTO
+        description: >
+          Receita líquida dos itens. 
+          Cálculo: (Preço Unitário * Quantidade) - Desconto.
+          Nota: Não inclui o valor do frete.
+
+      - name: VALOR_FRETE
+        description: "Custo do frete associado ao pedido."
+
+  # ------------------------------------------------------------------
+  # Modelo 2: Vendas Agrupadas (Por Pedido)
+  # ------------------------------------------------------------------
+  - name: fct_vendas_agg
+    description: >
+      Tabela Fato consolidada de Vendas.
+      Cada linha representa um pedido único com métricas agregadas.
+    columns:
+      # --- CHAVES (Identificadores) ---
+      - name: ID_PEDIDO
+        description: "Chave Primária. Identificador único do pedido."
+        tests:
+          - unique
+          - not_null
+
+      - name: ID_CLIENTE
+        description: "Identificador do cliente que realizou a compra."
+        tests:
+          - not_null
+          # Teste de integridade referencial (Garante que o cliente existe na dimensão)
+          - relationships:
+              to: ref('dim_clientes')
+              field: ID_CLIENTE
+
+      - name: ID_COLABORADOR
+        description: "Identificador do vendedor/colaborador responsável."
+
+      - name: ID_TRANSPORTADORA
+        description: "Identificador da transportadora responsável pela entrega."
+
+      # --- DATAS E PRAZOS ---
+      - name: DATA_PEDIDO
+        description: "Data de registro do pedido."
+
+      - name: DATA_REQUISICAO
+        description: "Prazo máximo de entrega prometido ao cliente."
+
+      - name: DATA_EMBARQUE
+        description: "Data efetiva de envio da mercadoria."
+
+      # --- SITUAÇÃO DO PEDIDO (Flags e Status) ---
+      - name: STATUS_EMBARQUE
+        description: "Situação logística atual do pedido."
+        tests:
+          - accepted_values:
+              values: ['ENVIADO', 'ENVIO PENDENTE']
+
+      - name: PEDIDO_ATRASADO
+        description: "Flag indicando se o envio ocorreu após a data requisitada."
+        tests:
+          - accepted_values:
+              values: ['SIM', 'NÃO']
+
+      # --- MÉTRICAS (Valores Calculados e Financeiros) ---
+      - name: QUANTIDADE_TOTAL
+        description: "Quantidade total de itens (unidades) no pedido."
+
+      - name: RECEITA_BRUTA_TOTAL
+        description: "Soma do valor bruto dos produtos (Preço Unitário * Quantidade)."
+
+      - name: DESCONTO_TOTAL
+        description: "Valor total concedido em descontos nos itens do pedido."
+
+      - name: RECEITA_TOTAL_COM_DESCONTO
+        description: >
+          Receita líquida dos produtos.
+          Cálculo: (Preço Unitário * Quantidade) - Desconto.
+          Nota: Não inclui o frete.
+
+      - name: VALOR_FRETE
+        description: "Valor cobrado pelo transporte do pedido."
+
+  # ------------------------------------------------------------------
+  # Modelo 3: Performance de Produtos (Curva ABC)
+  # ------------------------------------------------------------------
+  - name: dim_produtos
+    description: >
+      Tabela de dimensão de produtos contendo atributos cadastrais e 
+      classificação de performance (Curva ABC) baseada na receita histórica.
+    columns:
+      # --- IDENTIFICADORES ---
+      - name: ID_PRODUTO
+        description: "Chave Primária. Identificador único do produto."
+        tests:
+          - unique
+          - not_null
+
+      - name: NOME_PRODUTO
+        description: "Nome comercial do produto."
+
+      - name: ID_CATEGORIA
+        description: "Identificador da categoria do produto."
+
+      # --- ESTOQUE E LOGÍSTICA ---
+      - name: UNIDADES_EM_ESTOQUE
+        description: "Quantidade física atual do produto disponível em estoque."
+
+      - name: STATUS_ESTOQUE
+        description: "Indicador textual da disponibilidade (ex: 'Em Estoque', 'Baixo Estoque')."
+
+      # --- MÉTRICAS DE VENDAS ---
+      - name: FREQUENCIA_VENDAS
+        description: "Contagem distinta de pedidos únicos em que este produto foi vendido."
+
+      - name: QUANTIDADE_VENDIDA
+        description: "Total acumulado de unidades vendidas em todo o histórico."
+
+      - name: RECEITA_TOTAL
+        description: "Receita bruta total gerada por este produto (sem descontos)."
+
+      # --- CLASSIFICAÇÃO ABC (PARETO) ---
+      - name: RECEITA_TOTAL_ACUMULADA
+        description: >
+          Soma cumulativa da receita, ordenada do produto com maior faturamento para o menor.
+          Utilizada para calcular a posição do produto na curva de Pareto.
+
+      - name: RECEITA_TOTAL_GERAL
+        description: "Receita total global da empresa (soma de todos os produtos). Usada como denominador."
+
+      - name: PERCENTUAL_RECEITA_ACUMULADA
+        description: >
+          Percentual que a receita acumulada representa sobre o total.
+          Ex: 0.80 indica que este produto (somado aos maiores que ele) compõe 80% do faturamento.
+
+      - name: CURVA_ABC
+        description: >
+          Classificação estratégica do produto baseada no Princípio de Pareto (80/20).
+          A = Produtos de alta importância (acumulam até 80% da receita).
+          B = Produtos de importância intermediária (de 80% a 95%).
+          C = Produtos de cauda longa (últimos 5% da receita).
+        tests:
+          - accepted_values:
+              values: ['A', 'B', 'C']
+
+  # ------------------------------------------------------------------
+  # Modelo 4: Perfil de Clientes (Classificação)
+  # ------------------------------------------------------------------
+  - name: dim_clientes
+    description: >
+      Tabela dimensão de Clientes (SCD Tipo 1).
+      Combina dados cadastrais (Nome, Endereço, Contato) com métricas de comportamento 
+      de compra (RFM) e segmentação de valor (Classificação Quartil).
+    columns:
+      # --- IDENTIFICADORES ---
+      - name: ID_CLIENTE
+        description: "Chave Primária. Identificador único do cliente (Customer ID)."
+        tests:
+          - unique
+          - not_null
+
+      - name: NOME_EMPRESA
+        description: "Razão social ou nome comercial da empresa cliente."
+        tests:
+          - not_null
+
+      - name: NOME_CONTATO
+        description: "Nome do ponto de contato principal na empresa."
+
+      - name: CARGO_CONTATO
+        description: "Cargo ou título profissional do contato principal."
+
+      - name: ENDERECO
+        description: "Endereço logradouro (Rua, Número, Complemento)."
+
+      - name: CIDADE
+        description: "Cidade de localização do cliente."
+
+      - name: REGIAO
+        description: "Estado, Província ou Região geográfica."
+
+      - name: CEP
+        description: "Código postal de endereçamento."
+
+      - name: PAIS
+        description: "País de origem do cliente."
+
+      - name: TELEFONE
+        description: "Número de telefone comercial formatado."
+
+      - name: FAX
+        description: "Número de fax (se houver)."
+
+      # --- MÉTRICAS DE COMPORTAMENTO (Calculadas no CTE intermediate_clientes) ---
+      - name: PRIMEIRA_COMPRA
+        description: "Data do pedido mais antigo realizado pelo cliente (Lifetime)."
+
+      - name: ULTIMA_COMPRA
+        description: "Data do pedido mais recente. Indicador de Recência."
+
+      - name: TOTAL_PEDIDOS
+        description: "Contagem total de pedidos distintos realizados pelo cliente (Frequência)."
+
+      - name: VALOR_TOTAL_GASTO
+        description: "Soma acumulada de toda a receita gerada pelo cliente (Monetário)."
+
+      # --- 3. SEGMENTAÇÃO DE CLIENTES (Lógica Final) ---
+      - name: CLASSE_CLIENTE
+        description: >
+          Número do quartil (1 a 4) calculado via função NTILE baseado no valor gasto.
+          4 = Clientes que mais gastam.
+          1 = Clientes que menos gastam.
+
+      - name: CLASSIFICACAO_CLIENTE
+        description: >
+          Rótulo de negócio para a segmentação do cliente.
+          Calculado com base na CLASSE_CLIENTE.
+        tests:
+          - accepted_values:
+              values: ['VIP', 'Ouro', 'Prata', 'Bronze', 'Sem Classe']

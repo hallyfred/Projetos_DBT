@@ -4,52 +4,52 @@ models:
 ###############################################################################
 #################### --- STAGING: PEDIDOS (ORDERS) --- ########################
 ###############################################################################
-  - name: stg_orders
+  - name: STG_ORDERS
     description: "Tabela de pedidos limpa e traduzida para o português."
     columns:
-      - name: id_pedido
+      - name: ID_PEDIDO
         description: "Chave primária do pedido."
         data_tests:
           - unique
           - not_null
-      - name: id_cliente
+      - name: ID_CLIENTE
         description: "Código identificador do cliente (FK)."
         data_tests:
           - not_null
-      - name: id_colaborador
+      - name: ID_COLABORADOR
         description: "ID do funcionário responsável pela venda."
-      - name: id_transportadora
+      - name: ID_TRANSPORTADORA
         description: "ID da transportadora responsável pela entrega."
-      - name: data_pedido
+      - name: DATA_PEDIDO
         description: "Data que se espera a entrega do pedido"
-      - name: data_requisicao
+      - name: DATA_REQUISICAO
         description: "Data solicitada para entrega."
-      - name: data_embarque
+      - name: DATA_EMBARQUE
         description: "Data em que o pedido saiu para entrega."
-      - name: valor_frete
+      - name: VALOR_FRETE
         description: "Custo total do frete do pedido."
-      - name: nome_destinatario
+      - name: NOME_DESTINATARIO
         description: "Nome da pessoa ou empresa que receberá o pedido."
-      - name: endereco_entrega
+      - name: ENDERECO_ENTREGA
         description: "Endereço completo de entrega."
-      - name: cidade_entrega
+      - name: CIDADE_ENTREGA
         description: "Cidade de destino."
-      - name: regiao_entrega
+      - name: REGIAO_ENTREGA
         description: "Região ou estado de destino."
-      - name: cep_entrega
+      - name: CEP_ENTREGA
         description: "Código postal de destino."
-      - name: pais_entrega
+      - name: PAIS_ENTREGA
         description: "País de destino."
-      - name: dias_processamento
+      - name: DIAS_PROCESSAMENTO
         description: "Tempo até o embarque do pedido (em dias)."
-      - name: status_pedido
+      - name: STATUS_PEDIDO
         description: "Status do pedido (Enviado ou Pendente)."
         data_tests:
           - not_null
           - accepted_values:
               arguments:
                 values: ['Enviado', 'Pendente']
-      - name: pedido_atrasado
+      - name: PEDIDO_ATRASADO
         description: "Indicador se o pedido está atrasado (sim/não)."
         data_tests:
           - not_null
@@ -61,225 +61,225 @@ models:
 ###############################################################################
 ################### --- STAGING: CLIENTES (CUSTOMERS) --- #####################
 ###############################################################################
-  - name: stg_costumers
+  - name: STG_COSTUMERS
     description: "Cadastro de clientes com nomes de colunas padronizados."
     columns:
-      - name: id_cliente
+      - name: ID_CLIENTE
         description: "Código único do cliente."
         data_tests:
           - unique
           - not_null
-      - name: nome_empresa
+      - name: NOME_EMPRESA
         description: "Nome da empresa cliente."
-      - name: nome_contato
+      - name: NOME_CONTATO
         description: "Nome do contato principal."
-      - name: cargo_contato
+      - name: CARGO_CONTATO
         description: "Cargo do contato na empresa."
-      - name: endereco
+      - name: ENDERECO
         description: "Endereço de faturamento."
-      - name: cidade
+      - name: CIDADE
         description: "Cidade do cliente."
-      - name: regiao
+      - name: REGIAO
         description: "Estado ou região do cliente."
-      - name: cep
+      - name: CEP
         description: "Código postal."
-      - name: pais
+      - name: PAIS
         description: "País do cliente."
-      - name: telefone
+      - name: TELEFONE
         description: "Telefone de contato."
-      - name: fax
+      - name: FAX
         description: "Número de fax."
 
 ###############################################################################
 ################# --- STAGING: FUNCIONÁRIOS (EMPLOYEES) --- ###################
 ###############################################################################
-  - name: stg_employees
+  - name: STG_EMPLOYEES
     description: "Informações cadastrais dos colaboradores da Northwind."
     columns:
-      - name: id_colaborador
+      - name: ID_COLABORADOR
         description: "ID único do funcionário."
         data_tests:
           - unique
           - not_null
-      - name: sobrenome
+      - name: SOBRENOME
         description: "Sobrenome do colaborador."
-      - name: nome
+      - name: NOME
         description: "Nome do colaborador."
-      - name: cargo
+      - name: CARGO
         description: "Cargo ocupado."
-      - name: titulo_cortesia
+      - name: TITULO_CORTESIA
         description: "Título de tratamento (Ex: Sr., Sra.)."
-      - name: data_nascimento
+      - name: DATA_NASCIMENTO
         description: "Data de nascimento."
-      - name: data_contratacao
+      - name: DATA_CONTRATACAO
         description: "Data de admissão na empresa."
-      - name: endereco
+      - name: ENDERECO
         description: "Endereço residencial."
-      - name: cidade
+      - name: CIDADE
         description: "Cidade de residência."
-      - name: regiao
+      - name: REGIAO
         description: "Região ou estado."
-      - name: cep
+      - name: CEP
         description: "Código postal residencial."
-      - name: pais
+      - name: PAIS
         description: "País de residência."
-      - name: telefone_residencial
+      - name: TELEFONE_RESIDENCIAL
         description: "Telefone fixo de casa."
-      - name: ramal
+      - name: RAMAL
         description: "Ramal interno."
-      - name: foto
+      - name: FOTO
         description: "Arquivo ou referência da foto."
-      - name: notas
+      - name: NOTAS
         description: "Observações e histórico do funcionário."
-      - name: id_gestor
+      - name: ID_GESTOR
         description: "ID do gestor direto (Auto-relacionamento)."
-      - name: caminho_foto
+      - name: CAMINHO_FOTO
         description: "Caminho de rede para a imagem."
-      - name: idade_colaborador
+      - name: IDADE_COLABORADOR
         description: "Idade atual do colaborador."
-      - name: anos_empresa
+      - name: ANOS_EMPRESA
         description: "Número de anos de serviço na empresa."
 
 ###############################################################################
 ############## --- STAGING: DETALHES DOS PEDIDOS (ORDER_DETAILS) --- ##########
 ###############################################################################
-  - name: stg_order_details
+  - name: STG_ORDER_DETAILS
     description: "Itens que compõem cada pedido (detalhamento de produtos)."
     columns:
-      - name: id_pedido
+      - name: ID_PEDIDO
         description: "ID do pedido vinculado."
         data_tests:
           - not_null
-      - name: id_produto
+      - name: ID_PRODUTO
         description: "ID do produto vendido."
         data_tests:
           - not_null
-      - name: preco_unitario
+      - name: PRECO_UNITARIO
         description: "Preço cobrado pela unidade no momento da venda."
-      - name: quantidade
+      - name: QUANTIDADE
         description: "Quantidade vendida."
-      - name: desconto
+      - name: DESCONTO
         description: "Percentual de desconto aplicado."
-      - name: preco_total
+      - name: PRECO_TOTAL
         description: "Valor total do item (Preço Unitário x Quantidade - Desconto)."
 
 ###############################################################################
 ################### --- STAGING: PRODUTOS (PRODUCTS) --- ######################
 ###############################################################################
-  - name: stg_products
+  - name: STG_PRODUCTS
     description: "Catálogo de produtos da empresa."
     columns:
-      - name: id_produto
+      - name: ID_PRODUTO
         description: "Chave primária do produto."
         data_tests:
           - unique
           - not_null
-      - name: nome_produto
+      - name: NOME_PRODUTO
         description: "Nome comercial do item."
-      - name: id_fornecedor
+      - name: ID_FORNECEDOR
         description: "ID do fornecedor do produto."
-      - name: id_categoria
+      - name: ID_CATEGORIA
         description: "ID da categoria do produto."
-      - name: quantidade_por_unidade
+      - name: QUANTIDADE_POR_UNIDADE
         description: "Descrição da embalagem/unidade."
-      - name: preco_unitario
+      - name: PRECO_UNITARIO
         description: "Preço de lista atual."
-      - name: unidades_estoque
+      - name: UNIDADES_ESTOQUE
         description: "Quantidade disponível em estoque."
-      - name: unidades_encomendadas
+      - name: UNIDADES_ENCOMENDADAS
         description: "Quantidade em trânsito/encomenda."
-      - name: nivel_reposicao
+      - name: NIVEL_REPOSICAO
         description: "Ponto de pedido para estoque."
-      - name: is_descontinuado
+      - name: IS_DESCONTINUADO
         description: "Flag indicando se o produto saiu de linha (True/False)."
-      - name: valor_estoque
+      - name: VALOR_ESTOQUE
         description: "Valor monetário total do produto em estoque (Preço x Unidades)."
-      - name: status_estoque
+      - name: STATUS_ESTOQUE
         data_tests:
           - accepted_values:
               arguments:  
                 values: ['Esgotado', 'Estoque Baixo', 'Estoque Normal']
-      - name: necessario_repor
+      - name: NECESSARIO_REPOR
         description: "Flag lógica: True se o estoque estiver baixo e o produto não estiver descontinuado."        
 
 ###############################################################################
 #################### --- STAGING: REGIÕES (REGION) --- ########################
 ###############################################################################
-  - name: stg_northwind__region
+  - name: STG_NORTHWIND__REGION
     description: "Macro-regiões de operação."
     columns:
-      - name: id_regiao
+      - name: ID_REGIAO
         description: "ID da região."
         data_tests:
           - unique
           - not_null
-      - name: descricao_regiao
+      - name: DESCRICAO_REGIAO
         description: "Nome da região (Ex: Northern, Southern)."
 
 ###############################################################################
 ############## --- STAGING: TRANSPORTADORAS (SHIPPERS) --- ####################
 ###############################################################################
-  - name: stg_shippers
+  - name: STG_SHIPPERS
     description: "Transportadoras parceiras."
     columns:
-      - name: id_transportadora
+      - name: ID_TRANSPORTADORA
         description: "ID da transportadora."
         data_tests:
           - unique
           - not_null
-      - name: nome_empresa
+      - name: NOME_EMPRESA
         description: "Nome da transportadora."
-      - name: telefone
+      - name: TELEFONE
         description: "Telefone de contato."
 
 ###############################################################################
 ################# --- STAGING: FORNECEDORES (SUPPLIERS) --- ###################
 ###############################################################################
-  - name: stg_suppliers
+  - name: STG_SUPPLIERS
     description: "Dados dos fornecedores de produtos."
     columns:
-      - name: id_fornecedor
+      - name: ID_FORNECEDOR
         description: "ID único do fornecedor."
         data_tests:
           - unique
           - not_null
-      - name: nome_empresa
+      - name: NOME_EMPRESA
         description: "Nome da empresa fornecedora."
-      - name: nome_contato
+      - name: NOME_CONTATO
         description: "Pessoa de contato."
-      - name: cargo_contato
+      - name: CARGO_CONTATO
         description: "Cargo do contato."
-      - name: endereco
+      - name: ENDERECO
         description: "Endereço comercial."
-      - name: cidade
+      - name: CIDADE
         description: "Cidade de origem."
-      - name: regiao
+      - name: REGIAO
         description: "Estado ou região."
-      - name: cep
+      - name: CEP
         description: "Código postal."
-      - name: pais
+      - name: PAIS
         description: "País de origem."
-      - name: telefone
+      - name: TELEFONE
         description: "Telefone comercial."
-      - name: fax
+      - name: FAX
         description: "Número do fax."
-      - name: homepage
+      - name: HOMEPAGE
         description: "Site oficial."
 
 ###############################################################################
 ################# --- STAGING: TERRITÓRIOS (TERRITORIES) --- ##################
 ###############################################################################
-  - name: stg_northwind__territories
+  - name: STG_NORTHWIND__TERRITORIES
     description: "Territórios específicos de atuação."
     columns:
-      - name: id_territorio
+      - name: ID_TERRITORIO
         description: "ID do território."
         data_tests:
           - unique
           - not_null
-      - name: descricao_territorio
+      - name: DESCRICAO_TERRITORIO
         description: "Nome da cidade ou área do território."
-      - name: id_regiao
+      - name: ID_REGIAO
         description: "Vínculo com a macro-região."
         data_tests:
           - not_null

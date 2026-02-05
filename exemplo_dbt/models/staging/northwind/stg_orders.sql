@@ -10,41 +10,40 @@ source as (
 renamed as (
     select
         -- transformações de chaves (IDs)
-        cast(order_id as int64) as id_pedido,
-        cast(customer_id as string) as id_cliente,
-        cast(employee_id as int64) as id_colaborador,
-        cast(ship_via as int64) as id_transportadora, 
+        cast(order_id as int64) as ID_PEDIDO,
+        cast(customer_id as string) as ID_CLIENTE,
+        cast(employee_id as int64) as ID_COLABORADOR,
+        cast(ship_via as int64) as ID_TRANSPORTADORA, 
 
         -- transformações de datas: Usando Macros para converter para formato BR
 
-        {{ format_br_date('order_date') }} as data_pedido,
-        {{ format_br_date('required_date') }} as data_requisicao,
-        {{ format_br_date('shipped_date') }} as data_embarque,
+        {{ format_br_date('order_date') }} as DATA_PEDIDO,
+        {{ format_br_date('required_date') }} as DATA_REQUISICAO,
+        {{ format_br_date('shipped_date') }} as DATA_EMBARQUE,
 
         -- trnasformações de valores monetários (Casting para NUMERIC)
-        cast(freight as numeric) as valor_frete,
+        cast(freight as numeric) as VALOR_FRETE,
 
         -- limpeza de strings (Remoção de espaços em branco desnecessários)
-        trim(ship_name) as nome_destinatario,
-        trim(ship_address) as endereco_entrega,
-        trim(ship_city) as cidade_entrega,
-        trim(ship_region) as regiao_entrega,
-        trim(ship_postal_code) as cep_entrega,
-        trim(ship_country) as pais_entrega,
+        trim(ship_name) as NOME_DESTINATARIO,
+        trim(ship_address) as ENDERECO_ENTREGA,
+        trim(ship_city) as CIDADE_ENTREGA,
+        trim(ship_region) as REGIAO_ENTREGA,
+        trim(ship_postal_code) as CEP_ENTREGA,
+        trim(ship_country) as PAIS_ENTREGA,
 
         -- Adicionando novas colunas para enriquecimento de dados
 
         -- tempo até o embarque do pedido (em dias)
-        date_diff(cast(shipped_date as date), cast(order_date as date), day) as dias_processamento,
+        date_diff(cast(shipped_date as date), cast(order_date as date), day) as DIAS_PROCESSAMENTO,
           
         -- Status de embarque: Pedido Enviado ou Pendente?
-        case when shipped_date is null then 'ENVIO PENDENTE' else 'ENVIADO' end as status_embarque,
-
+        case when shipped_date is null then 'ENVIO PENDENTE' else 'ENVIADO' end as STATUS_EMBARQUE,
         -- Pedido Atrasado: Sim ou Não?
         case 
             when shipped_date > required_date then "SIM" 
             else "NÃO" 
-        end as pedido_atrasado,
+        end as PEDIDO_ATRASADO,
 
 
 

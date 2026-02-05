@@ -12,32 +12,31 @@ vendas as (
     select
         -- Criando uma chave composta e única para cada linha da fato
         -- Lembrete: a tabela order_details não possui uma chave primária única
-        {{ dbt_utils.generate_surrogate_key(['od.id_pedido', 'od.id_pedido']) }} as id_venda,
-        od.id_pedido,
-        o.id_cliente,
-        o.id_colaborador,
-        od.id_produto,
-        o.id_transportadora,
-        
+        {{ dbt_utils.generate_surrogate_key(['od.ID_PEDIDO', 'od.ID_PRODUTO']) }} as ID_VENDAS,
+        od.ID_PEDIDO,
+        o.ID_CLIENTE,
+        o.ID_COLABORADOR,
+        od.ID_PRODUTO,
+        o.ID_TRANSPORTADORA,
         -- Datas, tempos e status relacionados à venda
-        o.data_pedido,
-        o.data_requisicao,
-        o.data_embarque,
-        o.dias_processamento,
-        o.status_embarque,
-        o.pedido_atrasado,
+        o.DATA_PEDIDO,
+        o.DATA_REQUISICAO,
+        o.DATA_EMBARQUE,
+        o.DIAS_PROCESSAMENTO,
+        o.STATUS_EMBARQUE,
+        o.PEDIDO_ATRASADO,
         
         -- Métricas de Venda
-        od.preco_unitario,
-        od.quantidade,
-        cast(od.quantidade * od.preco_unitario as numeric) as preco_total_sem_desconto,
-        od.desconto,
+        od.PRECO_UNITARIO,
+        od.QUANTIDADE,
+        cast(od.QUANTIDADE * od.PRECO_UNITARIO as numeric) as PRECO_TOTAL_SEM_DESCONTO,
+        od.DESCONTO,
 
-        od.preco_total as preco_total_com_desconto
+        od.PRECO_TOTAL as PRECO_TOTAL_COM_DESCONTO
         
 
     from order_details od
-    left join orders o on od.id_pedido = o.id_pedido
+    left join orders o on od.ID_PEDIDO = o.ID_PEDIDO
 )
 
 select * from vendas

@@ -1,17 +1,17 @@
 {{ config(materialized='ephemeral') }}
 
-with orders as (
+with clientes as (
     select * from {{ ref('stg_costumers') }}
 ),
 
 intermediate_clientes as (
-    select id_cliente,
-        min(data_pedido) as PRIMEIRA_COMPRA,
-        max(data_pedido) as ULTIMA_COMPRA,
-        count(distinct id_pedido) as TOTAL_PEDIDOS,
-        sum(receita_total_com_desconto) as VALOR_TOTAL_GASTO
+    select ID_CLIENTE,
+        min(DATA_PEDIDO) as PRIMEIRA_COMPRA,
+        max(DATA_PEDIDO) as ULTIMA_COMPRA,
+        count(distinct ID_PEDIDO) as TOTAL_PEDIDOS,
+        sum(RECEITA_TOTAL_COM_DESCONTO) as VALOR_TOTAL_GASTO
     from {{ ref('intermediate_vendas_agrupado') }} 
-    group by id_cliente
+    group by ID_CLIENTE
 ),
 
 clientes_completo as (
@@ -24,9 +24,9 @@ clientes_completo as (
     ntile(4) over (order by coalesce(ic.VALOR_TOTAL_GASTO, 0) asc) as CLASSE_CLIENTE
 
 
-from orders c
+from clientes c
 left join intermediate_clientes ic
-    on c.id_cliente = ic.id_cliente
+    on c.ID_CLIENTE = ic.ID_CLIENTE
 )
 
 select *,
