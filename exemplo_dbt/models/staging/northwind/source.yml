@@ -276,3 +276,27 @@ sources:
             description: "ID da região à qual este território pertence (Chave Estrangeira para a tabela region)."
             data_tests:
               - not_null
+###############################################################################
+##################### --- TABELA DE ESTADOS --- ###############################
+###############################################################################
+
+      - name: us_states
+        description: "Tabela contendo os estados dos EUA, utilizada para análises geográficas mais detalhadas."
+        columns:
+          - name: state_id
+            description: "ID único do estado (Chave Primária)."
+            data_tests:
+              - unique
+              - not_null
+          - name: state_name
+            description: "Nome completo do estado."
+            data_tests:
+              - not_null
+          - name: state_abbr
+            description: "Sigla abreviada do estado."
+            data_tests:
+              - not_null
+          - name: state_region
+            description: "Região geográfica à qual o estado pertence (ex: Northeast, Midwest)."
+            data_tests:
+              - not_null    

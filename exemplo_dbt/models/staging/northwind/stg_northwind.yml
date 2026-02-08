@@ -4,7 +4,7 @@ models:
 ###############################################################################
 #################### --- STAGING: PEDIDOS (ORDERS) --- ########################
 ###############################################################################
-  - name: STG_ORDERS
+  - name: stg_orders
     description: "Tabela de pedidos limpa e traduzida para o português."
     columns:
       - name: ID_PEDIDO
@@ -61,7 +61,7 @@ models:
 ###############################################################################
 ################### --- STAGING: CLIENTES (CUSTOMERS) --- #####################
 ###############################################################################
-  - name: STG_COSTUMERS
+  - name: stg_customers
     description: "Cadastro de clientes com nomes de colunas padronizados."
     columns:
       - name: ID_CLIENTE
@@ -93,7 +93,7 @@ models:
 ###############################################################################
 ################# --- STAGING: FUNCIONÁRIOS (EMPLOYEES) --- ###################
 ###############################################################################
-  - name: STG_EMPLOYEES
+  - name: stg_employees
     description: "Informações cadastrais dos colaboradores da Northwind."
     columns:
       - name: ID_COLABORADOR
@@ -143,7 +143,7 @@ models:
 ###############################################################################
 ############## --- STAGING: DETALHES DOS PEDIDOS (ORDER_DETAILS) --- ##########
 ###############################################################################
-  - name: STG_ORDER_DETAILS
+  - name: stg_orders_details
     description: "Itens que compõem cada pedido (detalhamento de produtos)."
     columns:
       - name: ID_PEDIDO
@@ -166,7 +166,7 @@ models:
 ###############################################################################
 ################### --- STAGING: PRODUTOS (PRODUCTS) --- ######################
 ###############################################################################
-  - name: STG_PRODUCTS
+  - name: stg_products
     description: "Catálogo de produtos da empresa."
     columns:
       - name: ID_PRODUTO
@@ -205,7 +205,7 @@ models:
 ###############################################################################
 #################### --- STAGING: REGIÕES (REGION) --- ########################
 ###############################################################################
-  - name: STG_NORTHWIND__REGION
+  - name: stg_region
     description: "Macro-regiões de operação."
     columns:
       - name: ID_REGIAO
@@ -215,11 +215,13 @@ models:
           - not_null
       - name: DESCRICAO_REGIAO
         description: "Nome da região (Ex: Northern, Southern)."
+      - name: SIGLA_REGIAO
+        description: "Abreviação ou sigla da região."  
 
 ###############################################################################
 ############## --- STAGING: TRANSPORTADORAS (SHIPPERS) --- ####################
 ###############################################################################
-  - name: STG_SHIPPERS
+  - name: stg_shippers
     description: "Transportadoras parceiras."
     columns:
       - name: ID_TRANSPORTADORA
@@ -235,7 +237,7 @@ models:
 ###############################################################################
 ################# --- STAGING: FORNECEDORES (SUPPLIERS) --- ###################
 ###############################################################################
-  - name: STG_SUPPLIERS
+  - name: stg_suppliers
     description: "Dados dos fornecedores de produtos."
     columns:
       - name: ID_FORNECEDOR
@@ -269,7 +271,7 @@ models:
 ###############################################################################
 ################# --- STAGING: TERRITÓRIOS (TERRITORIES) --- ##################
 ###############################################################################
-  - name: STG_NORTHWIND__TERRITORIES
+  - name: stg_territories
     description: "Territórios específicos de atuação."
     columns:
       - name: ID_TERRITORIO
@@ -283,3 +285,20 @@ models:
         description: "Vínculo com a macro-região."
         data_tests:
           - not_null
+###############################################################################
+################# --- STAGING: US_STATES --- ##################
+###############################################################################
+  - name: stg_us_states
+    description: "Estados dos EUA para análise geográfica."
+    columns:
+      - name: ID_ESTADO
+        description: "ID do estado."
+        data_tests:
+          - unique
+          - not_null
+      - name: NOME_ESTADO
+        description: "Nome completo do estado."
+      - name: SIGLA_ESTADO
+        description: "Abreviação oficial do estado."
+      - name: REGIAO_ESTADO
+        description: "Região geográfica do estado (Ex: Northeast, Midwest)."  
