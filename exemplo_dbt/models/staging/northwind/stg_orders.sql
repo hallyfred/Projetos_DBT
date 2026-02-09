@@ -41,9 +41,9 @@ renamed as (
         case when shipped_date is null then 'ENVIO PENDENTE' else 'ENVIADO' end as STATUS_EMBARQUE,
         -- Pedido Atrasado: Sim ou Não?
         case 
-            when shipped_date > required_date then "SIM" 
+            when shipped_date is null or required_date > shipped_date then "SIM" 
             else "NÃO" 
-        end as PEDIDO_ATRASADO,
+        end as PEDIDO_ATRASADO
 
 
 

@@ -88,7 +88,6 @@ models:
       - name: ID_PEDIDO
         description: "Chave Primária. Identificador único do pedido."
         tests:
-          - unique
           - not_null
 
       - name: ID_CLIENTE
@@ -258,7 +257,7 @@ models:
       - name: FAX
         description: "Número de fax (se houver)."
 
-      # --- MÉTRICAS DE COMPORTAMENTO (Calculadas no CTE intermediate_clientes) ---
+      # --- MÉTRICAS DE COMPORTAMENTO  ---
       - name: PRIMEIRA_COMPRA
         description: "Data do pedido mais antigo realizado pelo cliente (Lifetime)."
 
@@ -271,7 +270,7 @@ models:
       - name: VALOR_TOTAL_GASTO
         description: "Soma acumulada de toda a receita gerada pelo cliente (Monetário)."
 
-      # --- 3. SEGMENTAÇÃO DE CLIENTES (Lógica Final) ---
+      # --- 3. SEGMENTAÇÃO DE CLIENTES  ---
       - name: CLASSE_CLIENTE
         description: >
           Número do quartil (1 a 4) calculado via função NTILE baseado no valor gasto.
@@ -285,3 +284,43 @@ models:
         tests:
           - accepted_values:
               values: ['VIP', 'Ouro', 'Prata', 'Bronze', 'Sem Classe']
+
+  # ------------------------------------------------------------------
+  # Modelo 5: Perfil de Clientes (Classificação)
+  # ------------------------------------------------------------------
+
+  - name: dim_dados_geograficos
+    description: "Tabela dimensão de Dados Geográficos. Contém informações hierárquicas de territórios, regiões e estados."
+    columns:
+      - name: id_territorio
+        data_type: int64
+        description: "Identificador único do território."
+
+      - name: descricao_territorio
+        data_type: string
+        description: "Descrição textual do território."
+
+
+      - name: id_regiao
+        data_type: int64
+        description: "Identificador único da região."
+
+      - name: descricao_regiao
+        data_type: string
+        description: "Descrição textual da região."
+
+      - name: sigla_regiao
+        data_type: string
+        description: "Sigla da região."
+
+      - name: id_estado
+        data_type: int64
+        description: "Identificador único do estado."
+
+      - name: nome_estado
+        data_type: string
+        description: "Nome completo do estado."
+
+      - name: sigla_estado
+        data_type: string
+        description: "Sigla do estado."

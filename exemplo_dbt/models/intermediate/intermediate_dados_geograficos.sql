@@ -26,8 +26,8 @@ joined as (
         -- Estados 
         s.ID_ESTADO,
         s.NOME_ESTADO,
-        s.SIGLA_ESTADO,
-        s.REGIAO_ESTADO
+        s.SIGLA_ESTADO
+       
         
     from territories t
     inner join regions r on t.ID_REGIAO = r.ID_REGIAO

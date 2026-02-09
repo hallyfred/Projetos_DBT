@@ -42,20 +42,20 @@ models:
         description: "País de destino."
       - name: DIAS_PROCESSAMENTO
         description: "Tempo até o embarque do pedido (em dias)."
-      - name: STATUS_PEDIDO
+      - name: STATUS_EMBARQUE
         description: "Status do pedido (Enviado ou Pendente)."
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['Enviado', 'Pendente']
+                values: ['ENVIADO', 'ENVIO PENDENTE']
       - name: PEDIDO_ATRASADO
         description: "Indicador se o pedido está atrasado (sim/não)."
         data_tests:
           - not_null
           - accepted_values:
               arguments:
-                values: ['Sim', 'Não']
+                values: ['SIM', 'NÃO']
 
 
 ###############################################################################
@@ -198,7 +198,7 @@ models:
         data_tests:
           - accepted_values:
               arguments:  
-                values: ['Esgotado', 'Estoque Baixo', 'Estoque Normal']
+                values: ['ESGOTADO', 'ESTOQUE BAIXO', 'ESTOQUE NORMAL']
       - name: NECESSARIO_REPOR
         description: "Flag lógica: True se o estoque estiver baixo e o produto não estiver descontinuado."        
 
