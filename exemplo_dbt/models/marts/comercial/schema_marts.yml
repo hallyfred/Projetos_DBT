@@ -324,3 +324,65 @@ models:
       - name: sigla_estado
         data_type: string
         description: "Sigla do estado."
+
+  # ------------------------------------------------------------------
+  # Modelo 6: fornecedores
+  # ------------------------------------------------------------------
+  - name: dim_fornecedores
+    description: "Tabelas dimensão de Fornecedores. Contém informações cadastrais e de contato dos fornecedores."
+    columns:
+      - name: id_fornecedor
+        data_type: int64
+        description: "Identificador único do fornecedor."
+        tests:
+          - unique
+          - not_null
+
+      - name: nome_empresa
+        data_type: string
+        description: "Nome da empresa fornecedora."
+
+      - name: nome_contato
+        data_type: string
+        description: "Nome do contato direto do fornecedor."
+
+      - name: cargo_contato
+        data_type: string
+        description: "Cargo do contato direto do fornecedor."
+
+      - name: endereco
+        data_type: string
+        description: "Endereço completo do fornecedor (Rua, Número, Complemento)."
+
+      - name: cidade
+        data_type: string
+        description: "Cidade onde o fornecedor está localizado."
+
+      - name: regiao
+        data_type: string
+        description: "Região onde o fornecedor está localizado."
+
+
+      - name: cep
+        data_type: string
+        description: "Código postal do fornecedor."
+
+      - name: pais
+        data_type: string
+        description: "País onde o fornecedor está localizado."
+
+      - name: regiao_fornecedor
+        data_type: string
+        description: "Região geográfica do fornecedor (ex: 'América do Norte', 'Europa', 'Ásia')."
+
+      - name: telefone
+        data_type: string
+        description: "Número de telefone do fornecedor formatado."
+
+      - name: fax
+        data_type: string
+        description: "Número de fax do fornecedor (se disponível)."
+
+      - name: home_page
+        data_type: string
+        description: "Página inicial do fornecedor (se disponível)."

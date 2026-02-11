@@ -5,7 +5,7 @@ with source as (select * from {{source('northwind', 'suppliers')}}),
 renamed as (
     select
         -- transformações de chaves (IDs)
-        cast(supplier_id as int64) as id_fornecedor,
+        cast(supplier_id as int64) as ID_FORNECEDOR,
 
         -- limpeza de strings (Remoção de espaços em branco desnecessários)
         {{clean_string('company_name')}} as NOME_EMPRESA,
