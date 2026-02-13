@@ -58,8 +58,15 @@ models:
               values: ['SIM', 'NÃO']
 
       # --- MÉTRICAS FINANCEIRAS ---
-      - name: QUANTIDADE_TOTAL
-        description: "Soma da quantidade de todos os itens dentro do pedido."
+
+      - name: PRECO_UNITARIO
+        description: "Preço unitário do produto no momento da venda."
+
+      - name: QUANTIDADE
+        description: "Quantidade de produtos vendida (pode conter produtos diferentes)."
+      
+      - name: PRECO_TOTAL_SEM_DESCONTO
+        description: "Valor total dos produtos sem considerar descontos (Preço Unitário * Quantidade)."
 
       - name: RECEITA_BRUTA_TOTAL
         description: "Valor total dos produtos (Preço * Quantidade) sem considerar descontos."
@@ -386,3 +393,28 @@ models:
       - name: home_page
         data_type: string
         description: "Página inicial do fornecedor (se disponível)."
+
+  # ------------------------------------------------------------------
+  # Modelo 6: Transportadoras
+  # ------------------------------------------------------------------
+  - name: dim_transportadoras
+    description: "Tabela dimensão de Transportadoras. Contém informações cadastrais e de contato das transportadoras."
+    columns:
+      - name: id_transportadora
+        data_type: int64
+        description: "Identificador único da transportadora."
+        tests:
+          - unique
+          - not_null
+
+      - name: nome_empresa
+        data_type: string
+        description: "Nome da empresa transportadora."
+
+      - name: telefone
+        data_type: string
+        description: "Número de telefone da transportadora."
+
+      - name: status_contato
+        data_type: string
+        description: "Status do contato da transportadora (ex: 'COM TELEFONE', 'SEM TELEFONE')."
