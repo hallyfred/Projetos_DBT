@@ -9,3 +9,12 @@ exemplo_dbt:
       threads: 4
       keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
       location: US
+  
+  prod:
+      type: bigquery
+      method: service-account
+      project: projetodbt-479518
+      dataset: "dbt_marts" 
+      threads: 4
+      keyfile: "{{ env_var('DBT_GOOGLE_KEYFILE') }}"
+      location: US
