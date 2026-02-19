@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - dev  
-
+  workflow_dispatch:
+  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -36,6 +37,7 @@ jobs:
       - name: Gerar Documentação
         env:
           DBT_PROFILES_DIR: ./ 
+          DBT_GOOGLE_KEYFILE: ./service-account-key.json
         run: dbt docs generate
 
       - name: Publicar no GitHub Pages
