@@ -418,3 +418,74 @@ models:
       - name: status_contato
         data_type: string
         description: "Status do contato da transportadora (ex: 'COM TELEFONE', 'SEM TELEFONE')."
+
+  # ------------------------------------------------------------------
+  # Modelo 7: Colaboradores
+  # ------------------------------------------------------------------  
+
+  - name: dim_colaboradores
+    description: "Tabela dimensão de Colaboradores. Contém informações cadastrais e de contato dos colaboradores."
+    columns:
+      - name: id_colaborador
+        data_type: int64
+        description: "Identificador único do colaborador."
+
+      - name: nome_completo
+        data_type: string
+        description: "Nome completo do colaborador."
+
+      - name: cargo
+        data_type: string
+        description: "Cargo do colaborador."
+
+      - name: titulo_cortesia
+        data_type: string
+        description: "Título de cortesia do colaborador (ex: 'Sr.', 'Sra.', 'Dr.')."
+
+      - name: nome_gestor
+        data_type: string
+        description: "Nome do gestor direto do colaborador."
+
+      - name: data_contratacao
+        data_type: string
+        description: "Data de contratação do colaborador."
+
+      - name: anos_empresa
+        data_type: int64
+        description: "Anos de empresa do colaborador."
+
+      - name: faixa_tempo_empresa
+        data_type: string
+        description: "Faixa de tempo de empresa do colaborador (ex: '0-1 ano', '1-5 anos', '5+ anos')."
+
+      - name: data_nascimento
+        data_type: string
+        description: "Data de nascimento do colaborador."
+
+      - name: idade_colaborador
+        data_type: int64
+        description: "Idade do colaborador em anos."
+
+      - name: faixa_etaria
+        data_type: string
+        description: "Faixa etária do colaborador (ex: 'Jovem', 'Adulto', 'Idoso')."
+
+      - name: cidade
+        data_type: string
+        description: "Cidade onde o colaborador reside."
+
+      - name: regiao
+        data_type: string
+        description: "Região onde o colaborador reside."
+
+      - name: pais
+        data_type: string
+        description: "País onde o colaborador reside."
+
+      - name: telefone_residencial
+        data_type: string
+        description: "Número de telefone residencial do colaborador."
+
+      - name: ramal
+        data_type: string
+        description: "Ramal do colaborador (se disponível)."
